@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+{% endblock %}
+
+
+{% block heading %}
+First Page
+{% endblock %}
+
+
+{% block body %}
+
+<form class="form-signin center" action="/register" method="post">
+
+    <h1 class="title mb-3 font-weight-normal">Register!</h1>
+    <div class="form-group">
+
+        <label for="username">Enter your username</label>
+        <input type="username" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username"
+            required>
+
+    </div>
+    <div class="form-group">
+
+        <label for="password">Enter your password</label>
+        <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password"
+            required>
+
+    </div>
+
+    <div class="form-group">
+
+        <label for="password">Enter your password again</label>
+        <input type="password" id="inputPassword2" name="inputPassword2" class="form-control" placeholder="Password"
+            required>
+
+    </div>
+
+    <button class="btn btn-lg butt button" type="submit">Sign up</button>
+
+    <div>
+        {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+        {% endif %}
+
+    </div>
+
+    <div>Do you have an account?</h6> <a href="{{ url_for('login') }}" class="ml-2">Sign in</a></div>
+</form>
+
+
+
+
+
+{% endblock %}
