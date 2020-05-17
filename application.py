@@ -1,9 +1,11 @@
 import os
 
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import (Flask, abort, flash, redirect, render_template, request,
+                   session, url_for, jsonify)
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+import json
 
 app = Flask(__name__)
 
@@ -76,7 +78,7 @@ def register():
         elif password2 == "":
             error = "Missing password"
         elif password != password2:
-                error = "Passwords don't matching"
+            error = "Passwords don't matching"
         else:
             exist_username = db.execute("SELECT id FROM users WHERE username = :username", {
                 "username": username}).fetchone()
@@ -84,19 +86,47 @@ def register():
                 error = "The username exists. Please choose other."
             else:
                 db.execute("INSERT INTO users (username, password) VALUES (:username, :password)", {
-                        "username": username, "password": password})
+                    "username": username, "password": password})
                 db.commit()
                 return render_template('login.html', register=" Thank you for registering. Please sign in.")
         return render_template('register.html', error=error)
     return render_template('register.html')
+
 
 @app.route("/logout")
 def logout():
     session.pop('user_id')
     return redirect(url_for('index'))
 
+
 @app.route("/search")
 def search():
     return "AQUI VA SEARCH"
 
 
+@app.route("/api/<isbn>", methods=['GET'])
+def api(isbn):
+    # Make sure book exists.
+    print(isbn)
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn",
+                      {"isbn": isbn}).fetchone()
+    if book is None:
+        abort(404)
+    # Get the book.
+    book = db.execute("SELECT title, author, year, isbn, AVG(rating) as average_score, COUNT(review) as review_count FROM books LEFT JOIN reviews ON books.id = reviews.book_id WHERE isbn = :isbn GROUP BY title, author, year, isbn",
+                      {"isbn": isbn}).fetchone()
+
+    
+
+    return jsonify(title = book.title,
+                   author = book.author,
+                   year = book.year,
+                   isbn = book.isbn,
+                   review_count = book.review_count,
+                   average_score = book.average_score)
+
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error_404.html'), 404
