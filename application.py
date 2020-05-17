@@ -101,7 +101,7 @@ def logout():
 
 @app.route("/search")
 def search():
-    return "AQUI VA SEARCH"
+    return render_template('search.html')
 
 
 @app.route("/api/<isbn>", methods=['GET'])

@@ -1,0 +1,14 @@
+{% extends "layout2.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+<link rel="stylesheet" href="https://fontawesome.com/v4.7.0/assets/font-awesome/css/font-awesome.css">
+{% endblock %}
+{% block heading %} First Page {% endblock %}
+{% block body %}
+<form class="search_bar active-pink-3 ">
+  <input type="text" placeholder="Search.." name="search">
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+
+{% endblock %}

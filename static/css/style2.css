@@ -1,0 +1,36 @@
+.active-pink-4 input[type=text]:focus {
+  border: 1px solid #db014a;
+  box-shadow: 0 0 0 1px #db4275;
+}
+
+.active-pink-3 input[type=text] {
+  border: 1px solid #b1a2a4;
+  box-shadow: 0 0 0 1px #b1a2a4;
+}
+
+.search_bar input[type=text] {
+  margin-top: 125px;
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+
+
+.search_bar button {
+  margin-top: 125px;
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+}
