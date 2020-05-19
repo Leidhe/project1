@@ -99,15 +99,33 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/search")
+@app.route("/search", methods=['GET', 'POST'])
 def search():
+    if "user_id" not in session:
+        return redirect("/login")
+    text = None
+    if request.method == 'POST':
+        search = request.form.get('search')
+        text = "Your results for " + search + ":"
+        search = search.capitalize()
+        books = db.execute("SELECT isbn, title, author, year FROM books WHERE \
+                            books.isbn LIKE :search OR \
+                            books.title LIKE :search OR \
+                            books.author LIKE :search",
+                           {"search": search + '%'}).fetchall()
+
+        if books == []:
+            text = "No book has been found. Try again"
+            return render_template('search.html', text=text)
+        print(books)
+        return render_template('search.html', books=books, text=text)
+
     return render_template('search.html')
 
 
-@app.route("/api/<isbn>", methods=['GET'])
-def api(isbn):
+@app.route("/books/<string:isbn>", methods=['GET'])
+def book(isbn):
     # Make sure book exists.
-    print(isbn)
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn",
                       {"isbn": isbn}).fetchone()
     if book is None:
@@ -116,15 +134,24 @@ def api(isbn):
     book = db.execute("SELECT title, author, year, isbn, AVG(rating) as average_score, COUNT(review) as review_count FROM books LEFT JOIN reviews ON books.id = reviews.book_id WHERE isbn = :isbn GROUP BY title, author, year, isbn",
                       {"isbn": isbn}).fetchone()
 
-    
 
-    return jsonify(title = book.title,
-                   author = book.author,
-                   year = book.year,
-                   isbn = book.isbn,
-                   review_count = book.review_count,
-                   average_score = book.average_score)
+@app.route("/api/<isbn>", methods=['GET'])
+def api(isbn):
+    # Make sure book exists.
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn",
+                      {"isbn": isbn}).fetchone()
+    if book is None:
+        abort(404)
+    # Get the book.
+    book = db.execute("SELECT title, author, year, isbn, AVG(rating) as average_score, COUNT(review) as review_count FROM books LEFT JOIN reviews ON books.id = reviews.book_id WHERE isbn = :isbn GROUP BY title, author, year, isbn",
+                      {"isbn": isbn}).fetchone()
 
+    return jsonify(title=book.title,
+                   author=book.author,
+                   year=book.year,
+                   isbn=book.isbn,
+                   review_count=book.review_count,
+                   average_score=book.average_score)
 
 
 @app.errorhandler(404)

@@ -9,11 +9,43 @@
 <div class="jumbotron .jumbotron-fluid">
   <div class="container">
     <h1 class="center">Search a book!</h1>
-    <form class="search_bar active-pink-3 ">
-      <input type="text" placeholder="Search.." name="search">
+    <form class="search_bar active-pink-3 " action="/search" method="post">
+      <input type="text" placeholder="Search by ISBN, title or author..." name="search">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
+</div>
+<div class="container">
+  {% if text %}
+  <h2 class= center>{{ text }}</h2>
+  {% endif %}
+
+  {% if books %}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ISBN</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Year</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for book in books %}
+      <tr>
+        <th scope="row">{{ book.isbn }}</th>
+        <td><a href="{{ url_for('book', book_id=book.id) }}">
+            {{ book.title }}
+          </a></td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.year }}</td>
+      </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+  {% endif %}
 </div>
 
 
