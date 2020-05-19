@@ -9,7 +9,6 @@
 }
 
 .search_bar input[type=text] {
-  margin-top: 125px;
   padding: 10px;
   font-size: 17px;
   border: 1px solid grey;
@@ -21,7 +20,6 @@
 
 
 .search_bar button {
-  margin-top: 125px;
   float: left;
   width: 20%;
   padding: 10px;
@@ -33,4 +31,19 @@
   cursor: pointer;
 }
 
+.center{
+  text-align: center;
+  color: black;
+  margin-bottom: 6%;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+
+}
+
+body {
+  padding-top: 3.5rem;
+}
+
+.jumbotron {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.301) 0%,rgba(255,255,255,0.9) 100%),url('/static/images/book.jpg') center center;
+  background-size: cover;
 }
