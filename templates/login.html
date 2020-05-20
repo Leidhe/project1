@@ -17,15 +17,15 @@ First Page
 <form class="form-signin center" action="/login" method="post">
 
         {% if register %}
-        <h2 class=register> {{ register }} </h2>
+        <h4 class=register> {{ register }} </h2>
         {% endif %}
 
 
         <h1 class="title mb-3 font-weight-normal">Welcome!</h1>
         <input type="username" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username"
-                 autofocus>
+                required autofocus>
         <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password"
-                >
+                required >
 
         <button class="btn btn-lg butt button" type="submit">Sign in</button>
         <div>

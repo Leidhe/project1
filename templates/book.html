@@ -1,0 +1,96 @@
+{% extends "layout2.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+{% endblock %}
+{% block heading %} First Page {% endblock %}
+{% block body %}
+<div class="jumbotron .jumbotron-fluid">
+    <div class="container">
+        <h1 class="center">{{ title }}</h1>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <p><strong>ISBN:</strong> {{ isbn }}</p>
+            <p><strong>Author:</strong> {{ author }}</p>
+            <p><strong>Publication year:</strong> {{ year }}</p>
+
+        </div>
+        <div class="col-md-2 offset-md-2">
+            {% if number_ratings and average_score %}
+            <img src="/static/images/goodreads.png" alt="goodreads" width="100%">
+
+            {% endif%}
+        </div>
+        <div class="col-md-4">
+            {% if number_ratings and average_score %}
+            <p><strong>Average rating:</strong> {{ average_score }}</p>
+            <p><strong>Number of ratings:</strong> {{ number_ratings }}</p>
+            <p><strong></strong></p>
+            {% endif%}
+        </div>
+    </div>
+</div>
+
+<h2 class="center">Leave your review</h2>
+
+<div class="container review">
+
+    <form action="{{ url_for('book', book_id=id) }}" method="POST">
+        <label for="rating">Rate this book:</label>
+
+        <select name="rating" id="rating">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+
+        </select>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <div class="col">
+                    <textarea class="form-control input-sm" rows="3" cols="70" placeholder="Write a review..."
+                        name="review"></textarea>
+                </div>
+                <div class="col">
+
+                    <button type="submit" class="btn btn-block btn-primary"> Submit </button>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container">
+    {% if error %}
+    <h6 class = "error" >{{ error }}</h6>
+    {% endif %}
+</div>
+<hr size=2 width="85%">
+{% if reviews%}
+<h2 class="center">Other reviews</h2>
+{% endif %}
+
+<div class="container cards">
+
+    {% for review in reviews %}
+    <div class="card bg-light border-dark mb-3">
+        <div class="card-header"><strong>{{ review.username }}</strong></div>
+
+        <div class="card-body">
+            <h5 class="card-title">Rating: {{ review.rating }} points</h5>
+            <p class="card-text">{{ review.review }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
