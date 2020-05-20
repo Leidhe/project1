@@ -5,7 +5,7 @@
 ## You can use the app on Heroku!
 ### https://project1course.herokuapp.com/
 
-
+## Explanation
 When the app starts you will be redirected to the login page (login.html), where you can log in if you have a user or go to the registry through a link.
 
 On the registration page (register.html), you can write a username and password.
