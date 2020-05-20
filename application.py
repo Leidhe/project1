@@ -184,7 +184,10 @@ def book(book_id):
             "rating": rating, "review": review, "user_id": user_id, "book_id": book_id})
             db.commit()
             #Update all reviews of the book
-            reviews = db.execute("SELECT reviews.user_id, reviews.rating, reviews.review FROM books JOIN reviews ON books.id = reviews.book_id WHERE books.id = :id",
+    reviews = db.execute("SELECT users.username, reviews.rating, reviews.review \
+                        FROM books JOIN reviews ON books.id = reviews.book_id \
+                        JOIN users ON reviews.user_id = users.id \
+                        WHERE books.id = :id",
                          {"id": book_id}).fetchall()
 
 
@@ -199,9 +202,9 @@ def api(isbn):
     if book is None:
         abort(404)
     # Get the book.
-    book = db.execute("SELECT title, author, year, isbn, AVG(rating) as average_score, COUNT(review) as review_count FROM books LEFT JOIN reviews ON books.id = reviews.book_id WHERE isbn = :isbn GROUP BY title, author, year, isbn",
+    book = db.execute("SELECT title, author, year, isbn, AVG(CAST(reviews.rating AS FLOAT)) as average_score, COUNT(reviews.review) as review_count FROM books LEFT JOIN reviews ON books.id = reviews.book_id WHERE isbn = :isbn GROUP BY title, author, year, isbn",
                       {"isbn": isbn}).fetchone()
-
+    print(book)
     return jsonify(title=book.title,
                    author=book.author,
                    year=book.year,
