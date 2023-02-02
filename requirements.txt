@@ -8,7 +8,7 @@ psycopg2==2.7.6.1
 gunicorn==19.9.0
 Jinja2==2.10.1
 requests==2.21.0
-Werkzeug==0.15.3
+Werkzeug==0.15.5
 chardet==3.0.4
 Click==7.0
 urllib3==1.24.2
